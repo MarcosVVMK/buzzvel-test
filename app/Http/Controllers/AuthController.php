@@ -22,8 +22,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        $request->user()->currentAccessToken()->delete();
 
+        return $this->response( 'Token Revoked', 200 );
     }
 }

@@ -21,14 +21,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('V1')->group(function (){
     Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/login', [AuthController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function (){
+
         Route::get('/holiday-plans', [HolidayPlanController::class, 'index'] );
+
         Route::get('/holiday-plans/{id}', [HolidayPlanController::class, 'show'] );
+
         Route::post( '/holiday-plans', [HolidayPlanController::class, 'store']);
+
         Route::put( '/holiday-plans/{id}', [HolidayPlanController::class, 'update']);
+
         Route::delete( '/holiday-plans/{id}', [HolidayPlanController::class, 'destroy']);
+
+        Route::post('/logout', [AuthController::class, 'logout']);
+
     });
 
 });
