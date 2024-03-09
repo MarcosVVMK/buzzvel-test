@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\HolidayPlanResource;
 use App\Models\HolidayPlan;
 use App\Traits\HttpResponses;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,5 +108,17 @@ class HolidayPlanController extends Controller
         }
 
         return $this->response('Holiday Plan deleted!', 200);
+    }
+
+    /**
+     * Download the specified holiday plan PDF.
+     */
+    public function download(Request $request, string $id)
+    {
+        $holidayPlan = new HolidayPlanResource( HolidayPlan::where( 'id', $id)->first() );
+
+        $pdf = PDF::loadView('PDF.pdf-generate', ['holidayPlan' => $holidayPlan])->setPaper('a4', 'portrait');
+
+        return $pdf->download($holidayPlan['title']);
     }
 }

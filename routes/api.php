@@ -20,21 +20,23 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::prefix('V1')->group(function (){
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->name('user.login');
 
     Route::middleware('auth:sanctum')->group(function (){
 
-        Route::get('/holiday-plans', [HolidayPlanController::class, 'index'] );
+        Route::get('/holiday-plans', [HolidayPlanController::class, 'index'] )->name('holiday.index');
 
-        Route::get('/holiday-plans/{id}', [HolidayPlanController::class, 'show'] );
+        Route::get('/holiday-plans/{id}', [HolidayPlanController::class, 'show'] )->name('holiday.show');
 
-        Route::post( '/holiday-plans', [HolidayPlanController::class, 'store']);
+        Route::post( '/holiday-plans', [HolidayPlanController::class, 'store'])->name('holiday.store');
 
-        Route::put( '/holiday-plans/{id}', [HolidayPlanController::class, 'update']);
+        Route::put( '/holiday-plans/{id}', [HolidayPlanController::class, 'update'])->name('holiday.update');
 
-        Route::delete( '/holiday-plans/{id}', [HolidayPlanController::class, 'destroy']);
+        Route::delete( '/holiday-plans/{id}', [HolidayPlanController::class, 'destroy'])->name('holiday.destroy');
 
-        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get( '/download-pdf/{id}', [HolidayPlanController::class, 'download'])->name('holiday.download');
+
+        Route::post('/logout', [AuthController::class, 'logout'])->name('user.logout');
 
     });
 
