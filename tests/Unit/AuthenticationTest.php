@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-class AuthenticationControllerTest extends TestCase
+class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -15,10 +15,10 @@ class AuthenticationControllerTest extends TestCase
     public function it_can_authenticate_user_and_generate_access_token()
     {
 
-        $user = User::factory(User::class)->create([
+       User::factory(User::class)->create([
             'email' => 'user@example.com',
             'password' => bcrypt('secret')
-        ]);
+       ]);
 
 
         $response = $this->postJson('api/V1/login', [
@@ -53,7 +53,7 @@ class AuthenticationControllerTest extends TestCase
 
         $response = $this->postJson('api/V1/login', [
             'email' => 'invalid@example.com',
-            'password' => 'invalidpassword'
+            'password' => 'password'
         ]);
 
 

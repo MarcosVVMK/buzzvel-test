@@ -17,11 +17,11 @@ class HolidayPlanFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => '',
-            'description' => '',
-            'date' => '',
-            'location' => '',
-            'participants' => ''
+            'title' => fake()->name(),
+            'description' => fake()->text( '50'),
+            'date' => date('Y-m-d'),
+            'location' => fake()->text('50'),
+            'participants' => fake()->name() . ', ' . fake()->name()
         ];
     }
 }
