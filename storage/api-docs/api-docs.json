@@ -1,0 +1,478 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger Buzzvel test",
+        "description": "API for Buzzvel",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "marcosvm000@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/holiday-plans": {
+            "get": {
+                "tags": [
+                    "Holiday Plans"
+                ],
+                "summary": "Get all holiday plans",
+                "operationId": "getAllHolidayPlans",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": 1,
+                                        "title": "Example Holiday Plan",
+                                        "description": "Description for holiday plan",
+                                        "date": "yyyy-mm-dd",
+                                        "location": "Location of holiday plan",
+                                        "participants": "name of participants"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Holiday Plans"
+                ],
+                "summary": "Create a new holiday plan",
+                "operationId": "storeHolidayPlan",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "YYYY-MM-DD"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "participants": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Holiday Plan created!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Holiday Plan created!",
+                                    "data": {
+                                        "id": 1,
+                                        "title": "Example Holiday Plan"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Something is wrong!"
+                    },
+                    "422": {
+                        "description": "Data invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Data invalid",
+                                    "errors": {
+                                        "title": [
+                                            "The title field is required."
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/holiday-plans/{id}": {
+            "get": {
+                "tags": [
+                    "Holiday Plans"
+                ],
+                "summary": "Get a specific holiday plan",
+                "operationId": "showHolidayPlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the holiday plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "title": "Example Holiday Plan",
+                                    "description": "Description for holiday plan",
+                                    "date": "yyyy-mm-dd",
+                                    "location": "Location of holiday plan",
+                                    "participants": "name of participants"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Holiday Plans"
+                ],
+                "summary": "Update a holiday plan",
+                "operationId": "updateHolidayPlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the holiday plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 300
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "YYYY-MM-DD"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "participants": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Holiday Plan updated!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "title": "Example Holiday Plan",
+                                    "description": "Description for holiday plan",
+                                    "date": "yyyy-mm-dd",
+                                    "location": "Location of holiday plan",
+                                    "participants": "name of participants"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Something is wrong!"
+                    },
+                    "422": {
+                        "description": "Data invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Data invalid",
+                                    "errors": {
+                                        "title": [
+                                            "The title field is required."
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Holiday Plans"
+                ],
+                "summary": "Delete a holiday plan",
+                "operationId": "deleteHolidayPlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the holiday plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Holiday Plan deleted!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Holiday Plan deleted!"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Holiday Plan not deleted!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Holiday Plan not deleted!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/holiday-plans/{id}/download": {
+            "get": {
+                "tags": [
+                    "Holiday Plans"
+                ],
+                "summary": "Download a holiday plan PDF",
+                "operationId": "downloadHolidayPlanPdf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the holiday plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate user and generate access token",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Authorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Authorized!",
+                                    "token": "generated_token"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Revoke user access token",
+                "operationId": "logoutUser",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token Revoked",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "message": "Token Revoked"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    }
+}

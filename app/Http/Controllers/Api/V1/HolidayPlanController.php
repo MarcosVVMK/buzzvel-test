@@ -9,12 +9,39 @@ use App\Traits\HttpResponses;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
 class HolidayPlanController extends Controller
 {
     use HttpResponses;
+
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/holiday-plans",
+     *     tags={"Holiday Plans"},
+     *     summary="Get all holiday plans",
+     *     operationId="getAllHolidayPlans",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *              example={"data":{
+     *                  "id": 1, "title": "Example Holiday Plan", "description": "Description for holiday plan", "date": "yyyy-mm-dd", "location": "Location of holiday plan", "participants": "name of participants",
+     *              }}
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *          name="Authorization",
+     *          in="header",
+     *          required=true,
+     *          description="Bearer token",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * )
      */
     public function index()
     {
@@ -22,8 +49,79 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/holiday-plans",
+     *     tags={"Holiday Plans"},
+     *     summary="Create a new holiday plan",
+     *     operationId="storeHolidayPlan",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string",
+     *                     maxLength=100
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     maxLength=300
+     *                 ),
+     *                 @OA\Property(
+     *                     property="date",
+     *                     type="string",
+     *                     format="date",
+     *                     example="YYYY-MM-DD"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="location",
+     *                     type="string",
+     *                     maxLength=100
+     *                 ),
+     *                 @OA\Property(
+     *                     property="participants",
+     *                     type="string",
+     *                     maxLength=100,
+     *                     nullable=true
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Holiday Plan created!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             example={"message": "Holiday Plan created!", "data": {"id": 1, "title": "Example Holiday Plan"}}
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Something is wrong!"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Data invalid",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             example={"message": "Data invalid", "errors": {"title": {"The title field is required."}}}
+     *         ),
+     *     ),
+     *     @OA\Parameter(
+     *         name="Authorization",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer token",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     * ),
      */
+
     public function store(Request $request)
     {
         $validator = Validator::make( $request->all(),
@@ -50,15 +148,126 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/holiday-plans/{id}",
+     *     tags={"Holiday Plans"},
+     *     summary="Get a specific holiday plan",
+     *     operationId="showHolidayPlan",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the holiday plan",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="Authorization",
+     *         in="header",
+     *         required=true,
+     *         description="Bearer token",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             example={"id": 1, "title": "Example Holiday Plan", "description": "Description for holiday plan", "date": "yyyy-mm-dd", "location": "Location of holiday plan", "participants": "name of participants"}
+     *         )
+     *     )
+     * )
      */
+
     public function show(string $id)
     {
         return new HolidayPlanResource( HolidayPlan::where( 'id', $id)->first() );
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/holiday-plans/{id}",
+     *     tags={"Holiday Plans"},
+     *     summary="Update a holiday plan",
+     *     operationId="updateHolidayPlan",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the holiday plan",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="Authorization",
+     *          in="header",
+     *          required=true,
+     *          description="Bearer token",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="title",
+     *                     type="string",
+     *                     maxLength=100
+     *                 ),
+     *                 @OA\Property(
+     *                     property="description",
+     *                     type="string",
+     *                     maxLength=300
+     *                 ),
+     *                 @OA\Property(
+     *                     property="date",
+     *                     type="string",
+     *                     format="date",
+     *                     example="YYYY-MM-DD"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="location",
+     *                     type="string",
+     *                     maxLength=100
+     *                 ),
+     *                 @OA\Property(
+     *                     property="participants",
+     *                     type="string",
+     *                     maxLength=100,
+     *                     nullable=true
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Holiday Plan updated!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             example={"id": 1, "title": "Example Holiday Plan", "description": "Description for holiday plan", "date": "yyyy-mm-dd", "location": "Location of holiday plan", "participants": "name of participants"}
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Something is wrong!"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Data invalid",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             example={"message": "Data invalid", "errors": {"title": {"The title field is required."}}}
+     *         )
+     *     )
+     * )
      */
     public function update(Request $request, string $id)
     {
@@ -97,7 +306,47 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/holiday-plans/{id}",
+     *     tags={"Holiday Plans"},
+     *     summary="Delete a holiday plan",
+     *     operationId="deleteHolidayPlan",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the holiday plan",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="Authorization",
+     *          in="header",
+     *          required=true,
+     *          description="Bearer token",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Holiday Plan deleted!",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             example={"message": "Holiday Plan deleted!"}
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Holiday Plan not deleted!",
+     *     @OA\JsonContent(
+     *              type="object",
+     *              example={"message": "Holiday Plan not deleted!"}
+     *          )
+     *      ),
+     *     )
+     * )
      */
     public function destroy(string $id)
     {
@@ -111,7 +360,34 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Download the specified holiday plan PDF.
+     * @OA\Get(
+     *     path="/holiday-plans/{id}/download",
+     *     tags={"Holiday Plans"},
+     *     summary="Download a holiday plan PDF",
+     *     operationId="downloadHolidayPlanPdf",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="ID of the holiday plan",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="Authorization",
+     *          in="header",
+     *          required=true,
+     *          description="Bearer token",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     )
+     * )
      */
     public function download(Request $request, string $id)
     {
