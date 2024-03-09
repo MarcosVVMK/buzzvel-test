@@ -26,10 +26,22 @@ Install buzzvel-test with github
 ```
   cd buzzvel-test
 ```
-
+Install the project composer dependecies
 ```
   composer install
 ```
+
+Create database from migration
+
+```
+  php artisan migrate:fresh --seed
+```
+Create database entries to test
+
+```
+  php artisan db:seed 
+```
+Run server
 
 ```
   php artisan serve

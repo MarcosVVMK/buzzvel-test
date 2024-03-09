@@ -97,4 +97,6 @@ class AuthController extends Controller
 
         return $this->response( 'Token Revoked', 200 );
     }
+
+
 }
