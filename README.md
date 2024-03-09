@@ -47,7 +47,12 @@ Run server
   php artisan serve
 ```
 
-## Documentation
+  To run unit teste
+```
+   vendor/bin/phpunit
+```
+
+## API Documentation
 ```
    http://127.0.0.1:8000/api/documentation
 ```
