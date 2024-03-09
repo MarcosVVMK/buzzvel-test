@@ -9,6 +9,7 @@ use App\Traits\HttpResponses;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use mysql_xdevapi\Exception;
 use OpenApi\Annotations as OA;
 
 class HolidayPlanController extends Controller
@@ -184,7 +185,19 @@ class HolidayPlanController extends Controller
 
     public function show(string $id)
     {
-        return new HolidayPlanResource( HolidayPlan::where( 'id', $id)->first() );
+
+            $holidayPlan =  new HolidayPlanResource( HolidayPlan::where( 'id', $id)->first() );
+
+            if( ! is_null( $holidayPlan->resource) ){
+
+                return $holidayPlan;
+
+            }else{
+
+                return $this->error('Holiday plan not found!', 404);
+
+            }
+
     }
 
     /**
@@ -271,6 +284,12 @@ class HolidayPlanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $holidayPlan = HolidayPlan::find($id);
+
+        if(  is_null( $holidayPlan ) ){
+            return $this->error('Holiday plan not found!', 404);
+        }
+
         $validator = Validator::make( $request->all(), [
             'title'         => 'required|max:100',
             'description'   => 'required|max:300',
@@ -295,7 +314,7 @@ class HolidayPlanController extends Controller
 
         ];
 
-        $updated = HolidayPlan::find($id)->update($createdArray);
+        $updated = $holidayPlan->update($createdArray);
 
         if (!$updated){
             return $this->error( 'Something is wrong!', 400 );
@@ -350,6 +369,12 @@ class HolidayPlanController extends Controller
      */
     public function destroy(string $id)
     {
+        $holidayPlan = HolidayPlan::find($id);
+
+        if(  is_null( $holidayPlan ) ){
+            return $this->error('Holiday plan not found!', 404);
+        }
+
         $deleted = HolidayPlan::destroy( $id );
 
         if (!$deleted){
@@ -391,7 +416,13 @@ class HolidayPlanController extends Controller
      */
     public function download(Request $request, string $id)
     {
-        $holidayPlan = new HolidayPlanResource( HolidayPlan::where( 'id', $id)->first() );
+        $holidayPlan = HolidayPlan::where( 'id', $id)->first();
+
+        if(  is_null( $holidayPlan ) ){
+            return $this->error('Holiday plan not found!', 404);
+        }
+
+        $holidayPlan = new HolidayPlanResource( $holidayPlan );
 
         $pdf = PDF::loadView('PDF.pdf-generate', ['holidayPlan' => $holidayPlan])->setPaper('a4', 'portrait');
 

@@ -52,6 +52,11 @@ Run server
    vendor/bin/phpunit
 ```
 
+## Run project
+
+To run this project you will need to create access token with `/api/V1/login` endpoint after use ``php artisan db:seed`` (NOTE: If you run the unit test the database will be deleted so you will need to run the command ``php artisan db:seed`` again )
+
+
 ## API Documentation
 ```
    http://127.0.0.1:8000/api/documentation
